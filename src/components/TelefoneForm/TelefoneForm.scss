@@ -1,0 +1,86 @@
+$primary-color: #33438d;
+$secondary-color: #6c757d;
+$success-color: #198754;
+$danger-color: #c91426;
+$warning-color: #ffc107;
+$light-gray: #f8f9fa;
+$dark-text: #212529;
+$muted-text: #6c757d;
+$border-color: #dee2e6;
+$border-radius: 0.375rem;
+$box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+$box-shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+
+form {
+    background-color: lighten($light-gray, 2%);
+    padding: 2rem;
+    border: 1px solid $border-color;
+    box-shadow: $box-shadow-sm inset;
+    margin-bottom: 2rem;
+  
+    h3 {
+      color: $primary-color;
+      margin-bottom: 1.5rem;
+      font-weight: 500;
+      border-bottom: 1px solid lighten($primary-color, 40%);
+      padding-bottom: 0.5rem;
+    }
+  
+    .form-label {
+      font-weight: 500;
+      margin-bottom: 0.3rem;
+      color: darken($muted-text, 15%);
+    }
+  
+    .form-control {
+      border-radius: $border-radius * 0.8;
+      border-color: darken($border-color, 5%);
+      transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+      &:focus {
+        border-color: $primary-color;
+        box-shadow: 0 0 0 0.2rem rgba($primary-color, 0.25);
+      }
+      &.is-invalid {
+        border-color: $danger-color;
+        &:focus {
+          box-shadow: 0 0 0 0.2rem rgba($danger-color, 0.25);
+        }
+      }
+    }
+  
+    .invalid-feedback {
+      font-weight: 500;
+    }
+  
+    .d-flex.justify-content-end {
+      margin-top: 1.5rem;
+      
+      .btn {
+        padding: 0.6rem 1.2rem;
+        font-weight: 500;
+        transition: background-color 0.2s ease, transform 0.15s ease;
+  
+        &:hover {
+            transform: translateY(-2px);
+        }
+      }
+  
+      .btn-secondary {
+        background-color: $danger-color;
+        border-color: $danger-color;
+        &:hover {
+            background-color: darken($danger-color, 10%);
+            border-color: darken($danger-color, 12%);
+        }
+      }
+  
+      .btn-primary {
+        background-color: $success-color;
+        border-color: $success-color;
+         &:hover {
+            background-color: darken($success-color, 10%);
+            border-color: darken($success-color, 12%);
+        }
+      }
+    }
+  }
