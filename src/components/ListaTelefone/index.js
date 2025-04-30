@@ -1,5 +1,6 @@
 import React from 'react';
 import './ListaTelefone.scss';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function ListaTelefone({ contatos, aoEditar, aoExcluir }) {
   if (!contatos || contatos.length === 0) {
@@ -13,6 +14,8 @@ function ListaTelefone({ contatos, aoEditar, aoExcluir }) {
           <tr>
             <th>Nome</th>
             <th>Número de Telefone</th>
+            <th>Endereço</th>
+            <th>Apelido</th>
             <th alt="acoes">Ações</th>
           </tr>
         </thead>
@@ -21,6 +24,8 @@ function ListaTelefone({ contatos, aoEditar, aoExcluir }) {
             <tr key={contato.id}>
               <td>{contato.nome}</td>
               <td>{contato.numero}</td>
+              <td>{contato.endereco}</td>
+              <td>{contato.apelido}</td>
               <td>
                 <button
                   className="btn btn-sm btn-warning me-2"

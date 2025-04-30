@@ -1,97 +1,87 @@
 import React, { useState, useEffect } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Componente para adicionar e editar entradas
-function TeleformForm({ aoSalvar, contatoParaEditar, aoCancelarEdicao }) {
-  // Estado inicial do formulário traduzido
-  const estadoInicialFormulario = { id: null, nome: '', numero: '' };
+function TelefoneForm({ aoSalvar, contatoParaEditar, aoCancelarEdicao }) {
+  const estadoInicialFormulario = { id: null, nome: '', numero: '', endereco: '', apelido: '' };
   const [dadosFormulario, setDadosFormulario] = useState(estadoInicialFormulario);
   const [erros, setErros] = useState({});
 
-  // Verifica se está em modo de edição
   const estaEditando = Boolean(contatoParaEditar && contatoParaEditar.id);
 
-  // Efeito para preencher o formulário quando contatoParaEditar muda
   useEffect(() => {
     if (estaEditando) {
       setDadosFormulario({
         id: contatoParaEditar.id,
-        nome: contatoParaEditar.nome,     // Changed from name
-        numero: contatoParaEditar.numero, // Changed from number
+        nome: contatoParaEditar.nome,
+        numero: contatoParaEditar.numero,
+        endereco: contatoParaEditar.endereco,
+        apelido: contatoParaEditar.apelido,
       });
-      setErros({}); // Limpa erros ao iniciar uma edição
+      setErros({});
     } else {
-      setDadosFormulario(estadoInicialFormulario); // Reseta o formulário se não estiver editando
+      setDadosFormulario(estadoInicialFormulario);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [contatoParaEditar]); // Roda novamente apenas quando contatoParaEditar muda
+  }, [contatoParaEditar]);
 
-
-  // Lida com mudanças nos inputs
   const lidarMudanca = (e) => {
     const { name, value } = e.target;
     setDadosFormulario((dadosAnteriores) => ({
       ...dadosAnteriores,
       [name]: value,
     }));
-    // Feedback básico de validação em tempo real (opcional)
     if (erros[name] && value.trim()) {
-        setErros(prev => ({...prev, [name]: null}));
+      setErros(prev => ({ ...prev, [name]: null }));
     }
   };
 
-  // Valida o formulário
   const validarFormulario = () => {
-      const novosErros = {};
-      // Campos traduzidos aqui (nome, numero)
-      if (!dadosFormulario.nome.trim()) novosErros.nome = 'O nome é obrigatório';
-      // Verificação simples do formato do número de telefone (permite dígitos, espaços, -, (, ), +)
-      if (!dadosFormulario.numero.trim()) {
-          novosErros.numero = 'O número de telefone é obrigatório';
-      } else if (!/^[+\d()-\s]+$/.test(dadosFormulario.numero)) {
-          novosErros.numero = 'Formato de número de telefone inválido';
-      }
-      setErros(novosErros);
-      return Object.keys(novosErros).length === 0; // True se não houver erros
+    const novosErros = {};
+    if (!dadosFormulario.nome.trim()) novosErros.nome = 'O nome é obrigatório';
+    if (!dadosFormulario.numero.trim()) {
+      novosErros.numero = 'O número de telefone é obrigatório';
+    } else if (!/^[+\d()-\s]+$/.test(dadosFormulario.numero)) {
+      novosErros.numero = 'Formato de número de telefone inválido';
+    }
+    if (!dadosFormulario.endereco.trim()) novosErros.endereco = 'O endereço é obrigatório';
+    if (!dadosFormulario.apelido.trim()) novosErros.apelido = 'O apelido é obrigatório';
+    setErros(novosErros);
+    return Object.keys(novosErros).length === 0;
   }
 
-  // Lida com o envio do formulário
   const lidarEnvio = (e) => {
-    e.preventDefault(); // Previne o recarregamento padrão da página do formulário
+    e.preventDefault();
     if (!validarFormulario()) {
-        return; // Não envia se a validação falhar
+      return;
     }
-    // Passa os dados do formulário atual (incluindo id se estiver editando)
-    // Note que os campos dentro de dadosFormulario agora são 'nome' e 'numero'
     aoSalvar(dadosFormulario);
     if (!estaEditando) {
-        setDadosFormulario(estadoInicialFormulario); // Limpa o formulário apenas após ADICIONAR com sucesso
+      setDadosFormulario(estadoInicialFormulario);
     }
-    setErros({}); // Limpa erros ao salvar com sucesso
+    setErros({});
   };
 
-  // Lida com o cancelamento (seja da edição ou do preenchimento)
   const lidarCancelar = () => {
-      setDadosFormulario(estadoInicialFormulario);
-      setErros({});
-      if (estaEditando && aoCancelarEdicao) {
-          aoCancelarEdicao(); // Sinaliza ao App para limpar o estado de edição
-      }
+    setDadosFormulario(estadoInicialFormulario);
+    setErros({});
+    if (estaEditando && aoCancelarEdicao) {
+      aoCancelarEdicao();
+    }
   }
 
   return (
     <form onSubmit={lidarEnvio} className="mb-4 p-3 border rounded bg-light">
       <h3 className="mb-3">{estaEditando ? 'Editar Contato' : 'Adicionar Novo Contato'}</h3>
       <div className="mb-3">
-        {/* Label e input para Nome */}
         <label htmlFor="nome" className="form-label">Nome:</label>
         <input
           type="text"
           className={`form-control ${erros.nome ? 'is-invalid' : ''}`}
-          id="nome"        // id corresponde ao htmlFor e ao nome do estado
-          name="nome"       // name corresponde à chave no estado dadosFormulario
+          id="nome"
+          name="nome"
           value={dadosFormulario.nome}
           onChange={lidarMudanca}
-          required // Validação básica HTML5
+          required
         />
         {erros.nome && <div className="invalid-feedback">{erros.nome}</div>}
       </div>
@@ -108,17 +98,43 @@ function TeleformForm({ aoSalvar, contatoParaEditar, aoCancelarEdicao }) {
         />
         {erros.numero && <div className="invalid-feedback">{erros.numero}</div>}
       </div>
+      <div className="mb-3">
+        <label htmlFor="endereco" className="form-label">Endereço:</label>
+        <input
+          type="text"
+          className={`form-control ${erros.endereco ? 'is-invalid' : ''}`}
+          id="endereco"
+          name="endereco"
+          value={dadosFormulario.endereco}
+          onChange={lidarMudanca}
+          required
+        />
+        {erros.endereco && <div className="invalid-feedback">{erros.endereco}</div>}
+      </div>
+      <div className="mb-3">
+        <label htmlFor="apelido" className="form-label">Apelido:</label>
+        <input
+          type="text"
+          className={`form-control ${erros.apelido ? 'is-invalid' : ''}`}
+          id="apelido"
+          name="apelido"
+          value={dadosFormulario.apelido}
+          onChange={lidarMudanca}
+          required
+        />
+        {erros.apelido && <div className="invalid-feedback">{erros.apelido}</div>}
+      </div>
       <div className="d-flex justify-content-end">
-          {estaEditando && (
-             <button type="button" className="btn btn-secondary me-2" onClick={lidarCancelar}>
-                Cancelar
-             </button>
-          )}
-         <button type="submit" className="btn btn-primary">
-            {estaEditando ? 'Atualizar Contato' : 'Adicionar Contato'}
-         </button>
+        {estaEditando && (
+          <button type="button" className="btn btn-secondary me-2" onClick={lidarCancelar}>
+            Cancelar
+          </button>
+        )}
+        <button type="submit" className="btn btn-primary">
+          {estaEditando ? 'Atualizar Contato' : 'Adicionar Contato'}
+        </button>
       </div>
     </form>
   );
 }
-export default TeleformForm;
+export default TelefoneForm;

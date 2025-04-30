@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+
+
 $primary-color: #33438d;
 $secondary-color: #6c757d;
 $success-color: #198754;
@@ -13,7 +16,7 @@ $box-shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
 
 body {
   background-color: #eef2f7;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+font-family: Outfit;
 }
 
 .card {
