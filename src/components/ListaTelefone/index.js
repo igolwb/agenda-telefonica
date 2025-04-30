@@ -14,7 +14,7 @@ function ListaTelefone({ contatos, aoEditar, aoExcluir }) {
           <tr>
             <th>Nome</th>
             <th>Número de Telefone</th>
-            <th>Endereço</th>
+            <th>email</th>
             <th>Apelido</th>
             <th alt="acoes">Ações</th>
           </tr>
@@ -24,7 +24,7 @@ function ListaTelefone({ contatos, aoEditar, aoExcluir }) {
             <tr key={contato.id}>
               <td>{contato.nome}</td>
               <td>{contato.numero}</td>
-              <td>{contato.endereco}</td>
+              <td>{contato.email}</td>
               <td>{contato.apelido}</td>
               <td>
                 <button

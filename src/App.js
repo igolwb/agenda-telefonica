@@ -7,7 +7,7 @@ const CHAVE_STORAGE = 'contatosTelefone';
 
 const obterDadosIniciais = () => {
     const contatosSalvos = localStorage.getItem(CHAVE_STORAGE);
-    if (contatosSalvos) {
+    if (contatosSalvos) {                                   
         try {
             const contatosAnalisados = JSON.parse(contatosSalvos);
             return Array.isArray(contatosAnalisados) ? contatosAnalisados : [];

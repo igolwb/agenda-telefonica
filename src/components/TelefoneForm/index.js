@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Componente para adicionar e editar entradas
 function TelefoneForm({ aoSalvar, contatoParaEditar, aoCancelarEdicao }) {
-  const estadoInicialFormulario = { id: null, nome: '', numero: '', endereco: '', apelido: '' };
+  const estadoInicialFormulario = { id: null, nome: '', numero: '', email: '', apelido: '' };
   const [dadosFormulario, setDadosFormulario] = useState(estadoInicialFormulario);
   const [erros, setErros] = useState({});
 
@@ -15,7 +15,7 @@ function TelefoneForm({ aoSalvar, contatoParaEditar, aoCancelarEdicao }) {
         id: contatoParaEditar.id,
         nome: contatoParaEditar.nome,
         numero: contatoParaEditar.numero,
-        endereco: contatoParaEditar.endereco,
+        email: contatoParaEditar.email,
         apelido: contatoParaEditar.apelido,
       });
       setErros({});
@@ -37,17 +37,34 @@ function TelefoneForm({ aoSalvar, contatoParaEditar, aoCancelarEdicao }) {
 
   const validarFormulario = () => {
     const novosErros = {};
-    if (!dadosFormulario.nome.trim()) novosErros.nome = 'O nome é obrigatório';
+  
+    // Validação do campo "nome"
+    if (!dadosFormulario.nome.trim()) {
+      novosErros.nome = 'O nome é obrigatório';
+    }
+  
+    // Validação do campo "numero"
     if (!dadosFormulario.numero.trim()) {
       novosErros.numero = 'O número de telefone é obrigatório';
-    } else if (!/^[+\d()-\s]+$/.test(dadosFormulario.numero)) {
-      novosErros.numero = 'Formato de número de telefone inválido';
+    } else if (!/^\+?[0-9\s\-()]+$/.test(dadosFormulario.numero)) {
+      novosErros.numero = 'Formato de número de telefone inválido. Use apenas números, espaços, parênteses, traços e o símbolo "+"';
     }
-    if (!dadosFormulario.endereco.trim()) novosErros.endereco = 'O endereço é obrigatório';
-    if (!dadosFormulario.apelido.trim()) novosErros.apelido = 'O apelido é obrigatório';
+  
+    // Validação do campo "email"
+    if (!dadosFormulario.email.trim()) {
+      novosErros.email = 'O email é obrigatório';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(dadosFormulario.email)) {
+      novosErros.email = 'Formato de email inválido. Exemplo: usuario@dominio.com';
+    }
+  
+    // Validação do campo "apelido"
+    if (!dadosFormulario.apelido.trim()) {
+      novosErros.apelido = 'O apelido é obrigatório';
+    }
+  
     setErros(novosErros);
     return Object.keys(novosErros).length === 0;
-  }
+  };
 
   const lidarEnvio = (e) => {
     e.preventDefault();
@@ -67,7 +84,7 @@ function TelefoneForm({ aoSalvar, contatoParaEditar, aoCancelarEdicao }) {
     if (estaEditando && aoCancelarEdicao) {
       aoCancelarEdicao();
     }
-  }
+  };
 
   return (
     <form onSubmit={lidarEnvio} className="mb-4 p-3 border rounded bg-light">
@@ -99,17 +116,17 @@ function TelefoneForm({ aoSalvar, contatoParaEditar, aoCancelarEdicao }) {
         {erros.numero && <div className="invalid-feedback">{erros.numero}</div>}
       </div>
       <div className="mb-3">
-        <label htmlFor="endereco" className="form-label">Endereço:</label>
+        <label htmlFor="email" className="form-label">Email:</label>
         <input
-          type="text"
-          className={`form-control ${erros.endereco ? 'is-invalid' : ''}`}
-          id="endereco"
-          name="endereco"
-          value={dadosFormulario.endereco}
+          type="email"
+          className={`form-control ${erros.email ? 'is-invalid' : ''}`}
+          id="email"
+          name="email"
+          value={dadosFormulario.email}
           onChange={lidarMudanca}
           required
         />
-        {erros.endereco && <div className="invalid-feedback">{erros.endereco}</div>}
+        {erros.email && <div className="invalid-feedback">{erros.email}</div>}
       </div>
       <div className="mb-3">
         <label htmlFor="apelido" className="form-label">Apelido:</label>
@@ -137,4 +154,5 @@ function TelefoneForm({ aoSalvar, contatoParaEditar, aoCancelarEdicao }) {
     </form>
   );
 }
+
 export default TelefoneForm;
