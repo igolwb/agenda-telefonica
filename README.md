@@ -37,7 +37,8 @@ Como Usar
 
 4. Para excluir um contato, clique no botão "Excluir" ao lado do contato desejado.
 
-5. Os dados são salvos automaticamente no Local Storage.
-Estilos
+Os dados são salvos automaticamente no Local Storage.
 
-6. Os estilos foram criados utilizando SCSS e Bootstrap para garantir uma interface moderna e responsiva.
+Estilos:
+
+Os estilos foram criados utilizando SCSS e Bootstrap para garantir uma interface moderna e responsiva.
